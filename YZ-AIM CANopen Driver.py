@@ -30,7 +30,12 @@ class MotorNetwork(Network):
         except Exception as error:
             print("ERROR: {}".format(error))
     
+    def tohex(self, val, nbits):
+        return hex((val + (1 << nbits)) % (1 << nbits))[2::]
+
+
     def shutdown(self):
+        self.disarm_all_motors()
         self.disconnect()
         os.system('sudo ifconfig can0 down')
 
@@ -60,7 +65,9 @@ class MotorNetwork(Network):
         self.unsubscribe(0x580 + motor_id)    
 
     def set_motor_position(self, motor_id, position, blocking=False):
-        hexValue = format(position, 'x')        
+        self.start_motor(motor_id)
+        self.arm_motor(motor_id)
+        hexValue = self.tohex(position, 32);       
         numDigits = len(hexValue)
         if (numDigits % 2 != 0):            
             hexValue = "0" + hexValue
@@ -68,18 +75,19 @@ class MotorNetwork(Network):
         byteArray = bytearray.fromhex(hexValue)
         byteArray.reverse()        
         
-        hexArray = self.SET_POSITION_CMD
+        hexArray = self.SET_POSITION_CMD.copy()
         for eachByte in byteArray:
             hexArray.append(int(hex(eachByte), 16))
         
         self.send_message(0x600 + motor_id, hexArray)
 
         if blocking:
+            self.motors.update({(motor_id): [None, True]}) 
             self.subscribe_motor_position(motor_id)            
             while(self.motors[motor_id][1]):
                 self.request_motor_position(motor_id)                
                 print("Current position of motor {}: {}".format(motor_id, self.motors[motor_id][0]))
-                time.sleep(0.1)
+                time.sleep(0.2)
 
             print("Motor {} has finished traveling to theoretical position {}. Actual position is {} ".format(motor_id, position, self.motors[motor_id][0]))            
             self.unsubscribe_motor_position(motor_id)
@@ -94,7 +102,7 @@ class MotorNetwork(Network):
         logging.debug("Response from node {} at {}".format(hex(motor_id), timestamp))         
         
         if position_response in response:
-            position = int.from_bytes(response[4::], "little")            
+            position = int.from_bytes(response[4::], "little", signed=True)            
             logging.debug("Position = {}".format(position))            
             # check to see if this motor has stopped moving since last callback
             if self.motors[motor_id][0] == position:
@@ -107,17 +115,17 @@ if __name__ == "__main__":
 
     logging.basicConfig(level=logging.ERROR)
     
+    
     motorNetwork = MotorNetwork()
-
-
+    
     motorNetwork.add_motor(0x01)
-    motorNetwork.start_motor(0x01)
-    motorNetwork.arm_motor(0x01)
+    
 
     try:
         while(True):
             positionReached = False
             position = input("Enter new position: ")
+            print("You entered", int(position))
             motorNetwork.set_motor_position(0x01, int(position), blocking=True)        
 
     except KeyboardInterrupt:
@@ -130,4 +138,9 @@ if __name__ == "__main__":
     finally:
         motorNetwork.shutdown()
         print("Shutting down network")
+    
+    
+
+   
+    
 
