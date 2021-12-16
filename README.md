@@ -13,6 +13,13 @@ This only works for Linux.
 
 This also requires a USB2CAN device or other similar USB-CAN interface that allows the CAN port to show up on the PC.
 
+You can ignore the USB2CAN examples, that was just to help setup the ports for CAN.
+
+The translated datasheet is also here as a PDF, it did not translate perfectly so the images are missing. 
+
+The .eds file is supposed to be used with CANOpen so the bus can know what parameters are available to read/write to each motor, but doesn't seem to be very useful as of now.
+
+I am probably controlling this incorrectly, but for now it's working. Ideally we should just be able to write and read to those parameters specified in the .eds file and it should be more abstracted than setting the byte array and appending the position value bytes.
 
 
 
