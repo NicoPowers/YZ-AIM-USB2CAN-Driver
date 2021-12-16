@@ -2,18 +2,20 @@ import os
 import canopen
 import logging
 import time
-import binascii
 from canopen.network import Network
 from canopen.nmt import NMT_STATES
 from canopen.node.remote import RemoteNode
 from canopen.profiles.p402 import BaseNode402
 
-class MotorNetwork(Network):    
+class YZ_AIM_Motor_Network(Network):    
     MOTOR_ON_CMD = [0x2B, 0x40, 0x60, 0x00, 0x2F, 0x00, 0x00, 0x00]
     MOTOR_OFF_CMD = [0x2B, 0x40, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00]    
     READ_POSITION_CMD = [0x40, 0x64, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00]
     SET_POSITION_CMD = [0x23, 0x7A, 0x60, 0x00]
 
+    # key of the dictionary is the motor id, the value is a pair where the 
+    # first element is the actual final motor position and second element 
+    # is a boolean that determines if the motor is still moving to a final position
     motors = {}
 
     def __init__(self):
@@ -64,6 +66,7 @@ class MotorNetwork(Network):
     def unsubscribe_motor_position(self, motor_id):
         self.unsubscribe(0x580 + motor_id)    
 
+    
     def set_motor_position(self, motor_id, position, blocking=False):
         self.start_motor(motor_id)
         self.arm_motor(motor_id)
@@ -73,6 +76,7 @@ class MotorNetwork(Network):
             hexValue = "0" + hexValue
         
         byteArray = bytearray.fromhex(hexValue)
+        # controller is expecting bytes to be received in big endian format
         byteArray.reverse()        
         
         hexArray = self.SET_POSITION_CMD.copy()
@@ -91,6 +95,9 @@ class MotorNetwork(Network):
 
             print("Motor {} has finished traveling to theoretical position {}. Actual position is {} ".format(motor_id, position, self.motors[motor_id][0]))            
             self.unsubscribe_motor_position(motor_id)
+            return self.motors[motor_id][0]
+        
+        return None
 
                                 
     def request_motor_position(self, motor_id):        
@@ -111,34 +118,7 @@ class MotorNetwork(Network):
                 self.motors.update({(motor_id): [position, True]})                                  
 
 
-if __name__ == "__main__":
 
-    logging.basicConfig(level=logging.ERROR)
-    
-    
-    motorNetwork = MotorNetwork()
-    
-    motorNetwork.add_motor(0x01)
-    
-
-    try:
-        while(True):
-            positionReached = False
-            position = input("Enter new position: ")
-            print("You entered", int(position))
-            motorNetwork.set_motor_position(0x01, int(position), blocking=True)        
-
-    except KeyboardInterrupt:
-        # stop motors
-        motorNetwork.disarm_all_motors()
-
-    except Exception as error:
-        print("ERROR OCCURED:", error)
-
-    finally:
-        motorNetwork.shutdown()
-        print("Shutting down network")
-    
     
 
    
