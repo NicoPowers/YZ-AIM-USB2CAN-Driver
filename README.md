@@ -1,5 +1,10 @@
 # YZ-AIM-USB2CAN-Driver
 
+Instal net-tools
+Install canopen for Python 3
+
+# ALERTS
+read_response from canopen/sdo/client.py raises SdoCommunicationError, but is not handled in pdo read function in canopen/pdo/base.py
 ## TODO:
 1) change motor id of connected motors 
 2) receive voltage, current, and torque readings from motor

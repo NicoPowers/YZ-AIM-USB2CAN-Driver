@@ -1,3 +1,4 @@
+from ast import Raise
 import os
 import canopen
 import logging
@@ -29,8 +30,8 @@ class YZ_AIM_Motor_Network(Network):
             self.connect(channel='can0', bustype='socketcan')
             
 
-        except Exception as error:
-            print("ERROR: {}".format(error))
+        except Exception as error:            
+            raise ValueError("ERROR: {}".format(error))
     
     def tohex(self, val, nbits):
         return hex((val + (1 << nbits)) % (1 << nbits))[2::]

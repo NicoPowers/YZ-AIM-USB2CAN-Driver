@@ -53,67 +53,6 @@ SupportedObjects=3
 2=0x1001
 3=0x1018
 
-[1000]
-ParameterName=Device Type
-ObjectType=0x7
-DataType=0x0007
-AccessType=ro
-DefaultValue=131474
-PDOMapping=0
-
-[1001]
-ParameterName=Error Register
-ObjectType=0x7
-DataType=0x0005
-AccessType=ro
-DefaultValue=0
-PDOMapping=1
-
-[1018]
-ParameterName=Identity
-ObjectType=0x9
-SubNumber=5
-
-[1018sub0]
-ParameterName=Number of Entries
-ObjectType=0x7
-DataType=0x0005
-AccessType=ro
-DefaultValue=4
-PDOMapping=0
-
-[1018sub1]
-ParameterName=Vendor ID
-ObjectType=0x7
-DataType=0x0007
-AccessType=ro
-DefaultValue=817
-PDOMapping=0
-
-[1018sub2]
-ParameterName=Product Code
-ObjectType=0x7
-DataType=0x0007
-AccessType=ro
-DefaultValue=1
-PDOMapping=0
-
-[1018sub3]
-ParameterName=Revision Number
-ObjectType=0x7
-DataType=0x0007
-AccessType=ro
-DefaultValue=256
-PDOMapping=0
-
-[1018sub4]
-ParameterName=Serial Number
-ObjectType=0x7
-DataType=0x0007
-AccessType=ro
-DefaultValue=1
-PDOMapping=0
-
 [OptionalObjects]
 SupportedObjects=33
 1=0x1005
@@ -149,6 +88,23 @@ SupportedObjects=33
 31=0x60F9
 32=0x60FB
 33=0x60FF
+
+
+[1000]
+ParameterName=Device Type
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=131474
+PDOMapping=0
+
+[1001]
+ParameterName=Error Register
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=0
+PDOMapping=1
 
 [1005]
 ParameterName=SYNC COB ID
@@ -195,6 +151,52 @@ AccessType=rw
 DefaultValue=1000
 PDOMapping=0
 
+[1018]
+ParameterName=Identity
+ObjectType=0x9
+SubNumber=5
+
+[1018sub0]
+ParameterName=Number of Entries
+ObjectType=0x7
+DataType=0x0005
+AccessType=ro
+DefaultValue=4
+PDOMapping=0
+
+[1018sub1]
+ParameterName=Vendor ID
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=817
+PDOMapping=0
+
+[1018sub2]
+ParameterName=Product Code
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=1
+PDOMapping=0
+
+[1018sub3]
+ParameterName=Revision Number
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=256
+PDOMapping=0
+
+[1018sub4]
+ParameterName=Serial Number
+ObjectType=0x7
+DataType=0x0007
+AccessType=ro
+DefaultValue=1
+PDOMapping=0
+
+
 [1200]
 ParameterName=Server SDO Parameter
 ObjectType=0x9
@@ -209,7 +211,7 @@ DefaultValue=2
 PDOMapping=0
 
 [1200sub1]
-ParameterName=COB ID Client to Server (Receive SDO)
+ParameterName=COB-ID Client->Server
 ObjectType=0x7
 DataType=0x0007
 AccessType=ro
@@ -217,7 +219,7 @@ DefaultValue=1537
 PDOMapping=0
 
 [1200sub2]
-ParameterName=COB ID Server to Client (Transmit SDO)
+ParameterName=COB-ID Server->Client
 ObjectType=0x7
 DataType=0x0007
 AccessType=ro
@@ -225,7 +227,7 @@ DefaultValue=1409
 PDOMapping=0
 
 [1400]
-ParameterName=Receive PDO 1 Parameter
+ParameterName=RPDO 1
 ObjectType=0x9
 SubNumber=6
 
@@ -238,7 +240,7 @@ DefaultValue=6
 PDOMapping=0
 
 [1400sub1]
-ParameterName=COB ID used by PDO
+ParameterName=COB-ID
 ObjectType=0x7
 DataType=0x0007
 AccessType=rw
@@ -270,7 +272,7 @@ DefaultValue=0
 PDOMapping=0
 
 [1400sub6]
-ParameterName=SYNC start value
+ParameterName=SYNC
 ObjectType=0x7
 DataType=0x0005
 AccessType=rw
@@ -278,7 +280,7 @@ DefaultValue=0
 PDOMapping=0
 
 [1401]
-ParameterName=Receive PDO 2 Parameter
+ParameterName=RPDO 2
 ObjectType=0x9
 SubNumber=6
 
@@ -291,7 +293,7 @@ DefaultValue=6
 PDOMapping=0
 
 [1401sub1]
-ParameterName=COB ID used by PDO
+ParameterName=COB-ID
 ObjectType=0x7
 DataType=0x0007
 AccessType=rw
@@ -323,7 +325,7 @@ DefaultValue=0
 PDOMapping=0
 
 [1401sub6]
-ParameterName=SYNC start value
+ParameterName=SYNC
 ObjectType=0x7
 DataType=0x0005
 AccessType=rw
@@ -331,7 +333,7 @@ DefaultValue=0
 PDOMapping=0
 
 [1402]
-ParameterName=Receive PDO 3 Parameter
+ParameterName=RPDO 3
 ObjectType=0x9
 SubNumber=6
 
@@ -344,7 +346,7 @@ DefaultValue=6
 PDOMapping=0
 
 [1402sub1]
-ParameterName=COB ID used by PDO
+ParameterName=COB-ID
 ObjectType=0x7
 DataType=0x0007
 AccessType=rw
@@ -376,7 +378,7 @@ DefaultValue=0
 PDOMapping=0
 
 [1402sub6]
-ParameterName=SYNC start value
+ParameterName=SYNC
 ObjectType=0x7
 DataType=0x0005
 AccessType=rw
@@ -384,7 +386,7 @@ DefaultValue=0
 PDOMapping=0
 
 [1403]
-ParameterName=Receive PDO 4 Parameter
+ParameterName=RPDO 4
 ObjectType=0x9
 SubNumber=6
 
@@ -397,7 +399,7 @@ DefaultValue=6
 PDOMapping=0
 
 [1403sub1]
-ParameterName=COB ID used by PDO
+ParameterName=COB-ID
 ObjectType=0x7
 DataType=0x0007
 AccessType=rw
@@ -1191,7 +1193,7 @@ PDOMapping=1
 
 [261D]
 ParameterName=Maximum Allowable Current
-ObjectType=0x7
+ObjectType=0x71
 DataType=0x0005
 AccessType=rw
 DefaultValue=0

@@ -1,16 +1,20 @@
+import os
+import time
 from YZ_AIM_DRIVER import YZ_AIM_Motor_Network
 import logging
 
 if __name__ == "__main__":
 
+    os.system('sudo ifconfig can0 down')
+    time.sleep(1)
+
     logging.basicConfig(level=logging.ERROR)
         
-    motorNetwork = YZ_AIM_Motor_Network()
-    
-    motorNetwork.add_motor(0x01)
-    
-
     try:
+        motorNetwork = YZ_AIM_Motor_Network()
+    
+        motorNetwork.add_motor(0x01)
+
         while(True):
             positionReached = False
             position = input("Enter new position: ")            
@@ -24,6 +28,7 @@ if __name__ == "__main__":
         logging.error("ERROR OCCURED:", error)
 
     finally:
+        
         motorNetwork.shutdown()
         logging.info("Shutting down network...")
     
